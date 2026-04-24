@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Programming — Complete Exam Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --surface3: #242424;
+    --border: #2a2a2a;
+    --border2: #333;
+    --text: #e8e6e0;
+    --text2: #9a9488;
+    --text3: #5c5850;
+    --accent: #e8c547;
+    --accent2: #c4a832;
+    --green: #4ade80;
+    --green-bg: #0d2018;
+    --green-border: #1a4030;
+    --blue: #60a5fa;
+    --blue-bg: #0d1a2e;
+    --blue-border: #1a3050;
+    --red: #f87171;
+    --red-bg: #2e0d0d;
+    --red-border: #501a1a;
+    --purple: #c084fc;
+    --purple-bg: #1a0d2e;
+    --purple-border: #3a1a50;
+    --orange: #fb923c;
+    --orange-bg: #2e1a0d;
+    --orange-border: #503020;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Sora', sans-serif;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── TOP NAV ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,13,13,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 1rem 1.5rem 1rem 0;
+    border-right: 1px solid var(--border2);
+    margin-right: 1rem;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  .page { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── SECTION HEADERS ── */
+  .chapter {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter:first-child { margin-top: 0; }
+
+  /* ── QUESTION CARD ── */
+  .qcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .qhead {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .qhead:hover { background: var(--surface2); }
+  .qnum {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--mono);
+    color: var(--accent);
+    background: #1e1a08;
+    border: 1px solid #3a3010;
+    border-radius: 4px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .qtag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .tag-must { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .tag-imp  { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange-border); }
+  .tag-know { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .tag-code { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+
+  .qtext { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
+  .chevron { color: var(--text3); font-size: 18px; margin-left: auto; transition: transform 0.25s; flex-shrink: 0; margin-top: 2px; }
+  .qcard.open .chevron { transform: rotate(180deg); }
+
+  .qbody { display: none; border-top: 1px solid var(--border); }
+  .qcard.open .qbody { display: block; }
+
+  .answer {
+    padding: 1.25rem;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .answer p { margin-bottom: 0.75rem; }
+  .answer p:last-child { margin-bottom: 0; }
+  .answer ul, .answer ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .answer li { margin-bottom: 0.3rem; }
+  .answer strong { color: var(--accent); font-weight: 600; }
+  .answer em { color: var(--blue); font-style: normal; }
+
+  /* ── CODE BLOCK ── */
+  .code-wrap {
+    margin: 0.75rem 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border2);
+  }
+  .code-header {
+    background: var(--surface3);
+    padding: 6px 14px;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--text3); }
+  pre {
+    background: #0a0a0a;
+    padding: 1rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: var(--text);
+  }
+  .kw { color: #c084fc; }   /* keywords */
+  .fn { color: #60a5fa; }   /* functions */
+  .st { color: #4ade80; }   /* strings */
+  .cm { color: #5c5850; }   /* comments */
+  .nm { color: #fb923c; }   /* numbers */
+  .pp { color: #e8c547; }   /* preprocessor */
+
+  /* ── TRICKY BOX ── */
+  .tricky {
+    background: #1a1008;
+    border: 1px solid #4a3010;
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    font-size: 13px;
+    color: #c8b870;
+  }
+  .tricky-head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 13px; }
+  th { background: var(--surface3); color: var(--text2); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px; border: 1px solid var(--border2); text-align: left; }
+  td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--surface2); }
+
+  /* ── SYNTAX BOX ── */
+  .syntax {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #a0c4ff;
+    margin: 0.75rem 0;
+    line-height: 1.6;
+  }
+
+  /* ── DIFF TABLE ── */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 0.75rem 0;
+    font-size: 13px;
+  }
+  .diff-cell { background: var(--surface2); padding: 10px 14px; }
+  .diff-head { background: var(--surface3); padding: 8px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .diff-head.left { color: var(--blue); }
+  .diff-head.right { color: var(--green); }
+
+  /* ── FLOWCHART SVG ── */
+  .flowchart { margin: 0.75rem 0; text-align: center; }
+  .flowchart svg { max-width: 100%; }
+
+  /* ── SEARCH ── */
+  .search-wrap { position: relative; margin-bottom: 1.5rem; }
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 10px 14px 10px 38px;
+    font-size: 14px;
+    font-family: var(--sans);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent2); }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 16px; }
+
+  /* ── PILLS ── */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pill:hover, .pill.active { background: #1e1a08; border-color: var(--accent2); color: var(--accent); }
+
+  /* ── PROGRESS ── */
+  .progress-bar { background: var(--surface2); border-radius: 4px; height: 6px; margin-top: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; }
+
+  .inline-code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--purple);
+  }
+
+  .note {
+    background: var(--blue-bg);
+    border: 1px solid var(--blue-border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    color: #a0c4ff;
+    margin: 0.75rem 0;
+  }
+
+  .warn {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    color: #fca5a5;
+    margin: 0.75rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .diff-grid { grid-template-columns: 1fr; }
+    .page { padding: 1rem; }
+    pre { font-size: 11.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">C Exam Guide</div>
+  <button class="nav-btn active" onclick="showPage('p1',this)">Basics</button>
+  <button class="nav-btn" onclick="showPage('p2',this)">Control Flow</button>
+  <button class="nav-btn" onclick="showPage('p3',this)">Functions</button>
+  <button class="nav-btn" onclick="showPage('p4',this)">Arrays</button>
+  <button class="nav-btn" onclick="showPage('p5',this)">Strings</button>
+  <button class="nav-btn" onclick="showPage('p6',this)">Pointers</button>
+  <button class="nav-btn" onclick="showPage('p7',this)">Structures</button>
+  <button class="nav-btn" onclick="showPage('p8',this)">Programs</button>
+</div>
+
+<!-- ═══════════════════ PAGE 1: BASICS ═══════════════════ -->
+<div class="page active" id="p1">
+
+  <div class="chapter">Chapter 1 — Data Types, Operators & I/O</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">State different data types supported by C language with memory size</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <table>
+          <tr><th>Data Type</th><th>Size</th><th>Range</th><th>Format</th></tr>
+          <tr><td><span class="inline-code">int</span></td><td>2 or 4 bytes</td><td>-32768 to 32767 (2B) / -2B to 2B (4B)</td><td>%d</td></tr>
+          <tr><td><span class="inline-code">float</span></td><td>4 bytes</td><td>3.4E-38 to 3.4E+38</td><td>%f</td></tr>
+          <tr><td><span class="inline-code">double</span></td><td>8 bytes</td><td>1.7E-308 to 1.7E+308</td><td>%lf</td></tr>
+          <tr><td><span class="inline-code">char</span></td><td>1 byte</td><td>-128 to 127</td><td>%c</td></tr>
+          <tr><td><span class="inline-code">long int</span></td><td>4 bytes</td><td>-2,147,483,648 to 2,147,483,647</td><td>%ld</td></tr>
+          <tr><td><span class="inline-code">short int</span></td><td>2 bytes</td><td>-32768 to 32767</td><td>%hd</td></tr>
+          <tr><td><span class="inline-code">void</span></td><td>0 bytes</td><td>No value</td><td>—</td></tr>
+        </table>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>int size is NOT always 2 bytes</strong> — on modern 32/64-bit compilers (like GCC) it's 4 bytes. Say "2 or 4 bytes depending on compiler".</li>
+            <li><strong>char stores ASCII value</strong> — <span class="inline-code">char c = 'A'</span> stores 65 internally. You can do arithmetic on char.</li>
+            <li><strong>float vs double</strong> — float has 6-7 significant digits precision; double has 15-16. Always use double for serious calculations.</li>
+            <li>Exam trick: they may ask "what is output of <span class="inline-code">printf("%d", 'A')</span>" — answer is <strong>65</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">List all relational operators with use/example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <table>
+          <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+          <tr><td>==</td><td>Equal to</td><td>5 == 5</td><td>1 (true)</td></tr>
+          <tr><td>!=</td><td>Not equal to</td><td>5 != 3</td><td>1 (true)</td></tr>
+          <tr><td>&gt;</td><td>Greater than</td><td>7 &gt; 3</td><td>1 (true)</td></tr>
+          <tr><td>&lt;</td><td>Less than</td><td>3 &lt; 7</td><td>1 (true)</td></tr>
+          <tr><td>&gt;=</td><td>Greater than or equal</td><td>5 &gt;= 5</td><td>1 (true)</td></tr>
+          <tr><td>&lt;=</td><td>Less than or equal</td><td>3 &lt;= 7</td><td>1 (true)</td></tr>
+        </table>
+        <p>Relational operators return <strong>1 (true)</strong> or <strong>0 (false)</strong>. Used in conditions of if, while, for.</p>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>== vs =</strong> — Most common exam trap! <span class="inline-code">if(a = 5)</span> assigns 5 to a (always true). <span class="inline-code">if(a == 5)</span> checks equality.</li>
+            <li>Relational operators have <strong>lower precedence than arithmetic</strong> — <span class="inline-code">a + b &gt; c</span> evaluates as <span class="inline-code">(a+b) &gt; c</span>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">State use of %d and %f. Write example with printf.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>%d</strong> — Format specifier for <em>integer</em> (int) values. Used in printf/scanf to read/write integer data.</p>
+        <p><strong>%f</strong> — Format specifier for <em>float</em> values. Displays 6 decimal places by default.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>example.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> age = <span class="nm">20</span>;
+    <span class="kw">float</span> salary = <span class="nm">25000.50</span>;
+    <span class="fn">printf</span>(<span class="st">"Age = %d\n"</span>, age);        <span class="cm">// Output: Age = 20</span>
+    <span class="fn">printf</span>(<span class="st">"Salary = %f\n"</span>, salary);   <span class="cm">// Output: Salary = 25000.500000</span>
+    <span class="fn">printf</span>(<span class="st">"Salary = %.2f\n"</span>, salary); <span class="cm">// Output: Salary = 25000.50</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><span class="inline-code">%.2f</span> limits decimal places to 2. <span class="inline-code">%5d</span> means minimum 5 character width.</li>
+            <li>Using <span class="inline-code">%d</span> with a float will give garbage output — type must match specifier.</li>
+            <li>Other common specifiers: <span class="inline-code">%c</span> (char), <span class="inline-code">%s</span> (string), <span class="inline-code">%lf</span> (double), <span class="inline-code">%o</span> (octal), <span class="inline-code">%x</span> (hex).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-imp">Important</span>
+      <span class="qtext">Explain arithmetic operators with example (all 5)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <table>
+          <tr><th>Operator</th><th>Name</th><th>Example (a=10, b=3)</th><th>Result</th></tr>
+          <tr><td>+</td><td>Addition</td><td>a + b</td><td>13</td></tr>
+          <tr><td>-</td><td>Subtraction</td><td>a - b</td><td>7</td></tr>
+          <tr><td>*</td><td>Multiplication</td><td>a * b</td><td>30</td></tr>
+          <tr><td>/</td><td>Division</td><td>a / b</td><td>3 (integer division!)</td></tr>
+          <tr><td>%</td><td>Modulus (remainder)</td><td>a % b</td><td>1</td></tr>
+        </table>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>Integer division</strong>: <span class="inline-code">10/3 = 3</span> not 3.33. To get decimal: <span class="inline-code">(float)10/3 = 3.33</span> (type casting).</li>
+            <li><strong>Modulus only works on integers</strong>: <span class="inline-code">10.5 % 3</span> is a compile error.</li>
+            <li>Increment/Decrement: <span class="inline-code">i++</span> (use then increment) vs <span class="inline-code">++i</span> (increment then use).</li>
+            <li>Exam question: if <span class="inline-code">a=5</span>, what is <span class="inline-code">b = a++</span>? Answer: b=5, a=6. What is <span class="inline-code">b = ++a</span>? Answer: b=6, a=6.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-imp">Important</span>
+      <span class="qtext">Explain bitwise operators with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <table>
+          <tr><th>Operator</th><th>Name</th><th>Example (a=5=0101, b=3=0011)</th><th>Result</th></tr>
+          <tr><td>&amp;</td><td>AND</td><td>a &amp; b = 0001</td><td>1</td></tr>
+          <tr><td>|</td><td>OR</td><td>a | b = 0111</td><td>7</td></tr>
+          <tr><td>^</td><td>XOR</td><td>a ^ b = 0110</td><td>6</td></tr>
+          <tr><td>~</td><td>Complement</td><td>~a</td><td>-6</td></tr>
+          <tr><td>&lt;&lt;</td><td>Left shift</td><td>a &lt;&lt; 1 = 1010</td><td>10</td></tr>
+          <tr><td>&gt;&gt;</td><td>Right shift</td><td>a &gt;&gt; 1 = 0010</td><td>2</td></tr>
+        </table>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>Left shift by n = multiply by 2^n</strong>: <span class="inline-code">5 &lt;&lt; 1 = 10</span>.</li>
+            <li><strong>Right shift by n = divide by 2^n</strong>: <span class="inline-code">8 &gt;&gt; 2 = 2</span>.</li>
+            <li>Don't confuse <span class="inline-code">&amp;</span> (bitwise AND) with <span class="inline-code">&amp;&amp;</span> (logical AND).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-imp">Important</span>
+      <span class="qtext">Explain conditional (ternary) operator with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>The conditional operator is the only <strong>ternary operator</strong> in C (takes 3 operands).</p>
+        <div class="syntax">condition ? expression_if_true : expression_if_false</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>ternary.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a = <span class="nm">10</span>, b = <span class="nm">20</span>;
+    <span class="kw">int</span> max = (a &gt; b) ? a : b;
+    <span class="fn">printf</span>(<span class="st">"Max = %d"</span>, max);  <span class="cm">// Output: Max = 20</span>
+
+    <span class="cm">// Equivalent if-else:</span>
+    <span class="kw">if</span>(a &gt; b) max = a;
+    <span class="kw">else</span> max = b;
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Ternary operator can replace simple if-else but NOT complex blocks.</li>
+            <li>Exam may ask: compare if-else with ternary — ternary is shorter but less readable for complex logic.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q7</span>
+      <span class="qtag tag-know">Good to Know</span>
+      <span class="qtext">Define Token and Keyword. What are different types of tokens?</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Token</strong> — The smallest individual unit in a C program that is meaningful to the compiler. A program is a collection of tokens.</p>
+        <p><strong>Types of Tokens:</strong></p>
+        <ul>
+          <li><strong>Keywords</strong> — Reserved words: int, float, if, while, return, void, char, etc.</li>
+          <li><strong>Identifiers</strong> — Names given by programmer: variable names, function names</li>
+          <li><strong>Constants</strong> — Fixed values: 10, 3.14, 'A', "Hello"</li>
+          <li><strong>Operators</strong> — +, -, *, /, =, ==, etc.</li>
+          <li><strong>Special symbols</strong> — { } ( ) [ ] ; , #</li>
+          <li><strong>Strings</strong> — "Hello World"</li>
+        </ul>
+        <p><strong>Keyword</strong> — A word that has a fixed, predefined meaning in C. Cannot be used as variable names. C has 32 keywords.</p>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Keywords are always <strong>lowercase</strong> in C. <span class="inline-code">Int</span> is not a keyword — <span class="inline-code">int</span> is.</li>
+            <li>Identifiers cannot start with a digit: <span class="inline-code">2var</span> is invalid, <span class="inline-code">var2</span> is valid.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q8</span>
+      <span class="qtag tag-know">Good to Know</span>
+      <span class="qtext">Draw and explain flowchart symbols</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <table>
+          <tr><th>Symbol Shape</th><th>Name</th><th>Use</th></tr>
+          <tr><td>Oval / Rounded rect</td><td>Terminal</td><td>Start / End of flowchart</td></tr>
+          <tr><td>Rectangle</td><td>Process</td><td>Arithmetic / Assignment operations</td></tr>
+          <tr><td>Diamond</td><td>Decision</td><td>Condition check (if/while) — Yes/No branches</td></tr>
+          <tr><td>Parallelogram</td><td>Input/Output</td><td>scanf / printf operations</td></tr>
+          <tr><td>Arrow</td><td>Flow line</td><td>Shows direction of flow</td></tr>
+          <tr><td>Circle</td><td>Connector</td><td>Connects parts of large flowcharts</td></tr>
+        </table>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Decision box (diamond) always has <strong>two exits</strong>: YES and NO.</li>
+            <li>Every flowchart must have exactly one START and one (or more) STOP.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q9</span>
+      <span class="qtag tag-know">Good to Know</span>
+      <span class="qtext">Distinguish between compiler and interpreter</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="diff-grid">
+          <div class="diff-head left">Compiler</div>
+          <div class="diff-head right">Interpreter</div>
+          <div class="diff-cell">Translates entire program at once</div>
+          <div class="diff-cell">Translates line by line</div>
+          <div class="diff-cell">Generates object code (.exe)</div>
+          <div class="diff-cell">No object code generated</div>
+          <div class="diff-cell">Faster execution after compilation</div>
+          <div class="diff-cell">Slower — translates every run</div>
+          <div class="diff-cell">Errors shown after full scan</div>
+          <div class="diff-cell">Stops at first error</div>
+          <div class="diff-cell">C, C++, Java use compiler</div>
+          <div class="diff-cell">Python, BASIC use interpreter</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q10</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Display number in decimal, octal, hexadecimal and binary</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>formats.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n, i, binary[<span class="nm">32</span>], count = <span class="nm">0</span>;
+    <span class="fn">printf</span>(<span class="st">"Enter a number: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+
+    <span class="fn">printf</span>(<span class="st">"Decimal:     %d\n"</span>, n);
+    <span class="fn">printf</span>(<span class="st">"Octal:       %o\n"</span>, n);
+    <span class="fn">printf</span>(<span class="st">"Hexadecimal: %x\n"</span>, n);
+
+    <span class="cm">/* Binary conversion */</span>
+    <span class="kw">int</span> temp = n;
+    <span class="kw">while</span>(temp &gt; <span class="nm">0</span>) {
+        binary[count++] = temp % <span class="nm">2</span>;
+        temp = temp / <span class="nm">2</span>;
+    }
+    <span class="fn">printf</span>(<span class="st">"Binary:      "</span>);
+    <span class="kw">for</span>(i = count - <span class="nm">1</span>; i &gt;= <span class="nm">0</span>; i--)
+        <span class="fn">printf</span>(<span class="st">"%d"</span>, binary[i]);
+    <span class="fn">printf</span>(<span class="st">"\n"</span>);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Use <span class="inline-code">%o</span> for octal, <span class="inline-code">%x</span> for hex (lowercase), <span class="inline-code">%X</span> for uppercase hex.</li>
+            <li>Binary has no built-in format specifier — you must compute it manually by dividing by 2.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q11</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Calculate simple interest SI = (P × N × R) / 100</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>si.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">float</span> p, r, si;
+    <span class="kw">int</span> n;
+    <span class="fn">printf</span>(<span class="st">"Enter Principal, Time (years), Rate: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%f %d %f"</span>, &amp;p, &amp;n, &amp;r);
+    si = (p * n * r) / <span class="nm">100</span>;
+    <span class="fn">printf</span>(<span class="st">"Simple Interest = %.2f"</span>, si);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 2: CONTROL FLOW ═══════════════════ -->
+<div class="page" id="p2">
+
+  <div class="chapter">Chapter 2 — Control Flow: if / switch / loops</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Write syntax of if-else and explain with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="syntax">if(condition) {<br>&nbsp;&nbsp;&nbsp;&nbsp;// statements if true<br>} else {<br>&nbsp;&nbsp;&nbsp;&nbsp;// statements if false<br>}</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>ifelse.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="fn">printf</span>(<span class="st">"Enter number: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+    <span class="kw">if</span>(n &gt; <span class="nm">0</span>)
+        <span class="fn">printf</span>(<span class="st">"Positive"</span>);
+    <span class="kw">else if</span>(n &lt; <span class="nm">0</span>)
+        <span class="fn">printf</span>(<span class="st">"Negative"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="st">"Zero"</span>);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>Dangling else problem</strong>: In nested if without braces, <span class="inline-code">else</span> belongs to the nearest <span class="inline-code">if</span>.</li>
+            <li>Without braces <span class="inline-code">{ }</span>, only ONE statement is part of if/else. Use braces for multiple statements.</li>
+            <li><span class="inline-code">if(a = 5)</span> is always true (assignment). Use <span class="inline-code">if(a == 5)</span> for comparison.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain nested if-else with example — find largest of three numbers</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>Nested if-else means an if-else inside another if-else block.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>largest3.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a, b, c;
+    <span class="fn">printf</span>(<span class="st">"Enter three numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %d %d"</span>, &amp;a, &amp;b, &amp;c);
+
+    <span class="kw">if</span>(a &gt; b) {
+        <span class="kw">if</span>(a &gt; c)
+            <span class="fn">printf</span>(<span class="st">"Largest = %d"</span>, a);
+        <span class="kw">else</span>
+            <span class="fn">printf</span>(<span class="st">"Largest = %d"</span>, c);
+    } <span class="kw">else</span> {
+        <span class="kw">if</span>(b &gt; c)
+            <span class="fn">printf</span>(<span class="st">"Largest = %d"</span>, b);
+        <span class="kw">else</span>
+            <span class="fn">printf</span>(<span class="st">"Largest = %d"</span>, c);
+    }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Give syntax of switch-case and explain with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="syntax">switch(expression) {<br>&nbsp;&nbsp;case value1: statements; break;<br>&nbsp;&nbsp;case value2: statements; break;<br>&nbsp;&nbsp;default: statements;<br>}</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>switch.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> choice;
+    <span class="kw">float</span> a = <span class="nm">10</span>, b = <span class="nm">3</span>;
+    <span class="fn">printf</span>(<span class="st">"1.Add 2.Sub 3.Mul 4.Div: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;choice);
+
+    <span class="kw">switch</span>(choice) {
+        <span class="kw">case</span> <span class="nm">1</span>: <span class="fn">printf</span>(<span class="st">"Sum = %.2f"</span>, a+b); <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="nm">2</span>: <span class="fn">printf</span>(<span class="st">"Diff = %.2f"</span>, a-b); <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="nm">3</span>: <span class="fn">printf</span>(<span class="st">"Product = %.2f"</span>, a*b); <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="nm">4</span>: <span class="fn">printf</span>(<span class="st">"Quotient = %.2f"</span>, a/b); <span class="kw">break</span>;
+        <span class="kw">default</span>: <span class="fn">printf</span>(<span class="st">"Invalid choice"</span>);
+    }
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>Missing break causes fall-through</strong>: without break, execution continues into next case. This can be intentional but is usually a bug.</li>
+            <li>Switch works only with <strong>integer and char</strong> values — NOT float, string, or ranges.</li>
+            <li><span class="inline-code">default</span> executes when no case matches. It is optional.</li>
+            <li>Exam trick: what is output if break is missing from case 1? All subsequent cases also execute!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain for loop with syntax, flowchart and example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="syntax">for(initialization; condition; update) {<br>&nbsp;&nbsp;&nbsp;&nbsp;// body<br>}</div>
+        <p><strong>Execution order:</strong> 1) Initialize (once) → 2) Check condition → 3) Execute body → 4) Update → back to 2</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>forloop.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> i;
+    <span class="cm">/* Print 1 to 10 */</span>
+    <span class="kw">for</span>(i = <span class="nm">1</span>; i &lt;= <span class="nm">10</span>; i++) {
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, i);
+    }
+    <span class="cm">/* Multiple statements in init/update */</span>
+    <span class="kw">for</span>(i = <span class="nm">10</span>; i &gt;= <span class="nm">1</span>; i--) {   <span class="cm">// reverse loop</span>
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, i);
+    }
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><span class="inline-code">for(;;)</span> is an infinite loop — all three parts are optional.</li>
+            <li>Variable declared inside for loop (<span class="inline-code">for(int i=0;...)</span>) is local to loop — only in C99+.</li>
+            <li>Off-by-one error: <span class="inline-code">i &lt; 10</span> runs 10 times (0-9), <span class="inline-code">i &lt;= 10</span> runs 11 times (0-10).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Compare while and do-while loop (4 points)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="diff-grid">
+          <div class="diff-head left">while loop</div>
+          <div class="diff-head right">do-while loop</div>
+          <div class="diff-cell">Entry-controlled loop</div>
+          <div class="diff-cell">Exit-controlled loop</div>
+          <div class="diff-cell">Condition checked BEFORE body executes</div>
+          <div class="diff-cell">Condition checked AFTER body executes</div>
+          <div class="diff-cell">Body may NOT execute if condition false initially</div>
+          <div class="diff-cell">Body executes AT LEAST once</div>
+          <div class="diff-cell">Syntax: while(cond) { ... }</div>
+          <div class="diff-cell">Syntax: do { ... } while(cond);</div>
+          <div class="diff-cell">Used when iteration count may be zero</div>
+          <div class="diff-cell">Used for menus, input validation</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header"><span>loops_compare.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">/* while — may not execute */</span>
+<span class="kw">int</span> i = <span class="nm">10</span>;
+<span class="kw">while</span>(i &lt; <span class="nm">5</span>) {         <span class="cm">// false, body skipped</span>
+    <span class="fn">printf</span>(<span class="st">"%d"</span>, i);
+}
+
+<span class="cm">/* do-while — always executes once */</span>
+<span class="kw">do</span> {
+    <span class="fn">printf</span>(<span class="st">"%d"</span>, i);   <span class="cm">// prints 10 once</span>
+} <span class="kw">while</span>(i &lt; <span class="nm">5</span>);        <span class="cm">// then checks — false, stops</span></pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>do-while has a <strong>semicolon after the while</strong>: <span class="inline-code">while(cond);</span> — forgetting this is a compile error.</li>
+            <li>If condition is true from the start, both loops behave identically.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">State use of break and continue statements</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>break</strong> — Immediately exits the current loop or switch block. Execution continues after the loop.</p>
+        <p><strong>continue</strong> — Skips the remaining statements of the current iteration and moves to the next iteration.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>break_continue.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> i;
+
+    <span class="cm">/* break example */</span>
+    <span class="kw">for</span>(i=<span class="nm">1</span>; i&lt;=<span class="nm">10</span>; i++) {
+        <span class="kw">if</span>(i == <span class="nm">5</span>) <span class="kw">break</span>;    <span class="cm">// stops at 5</span>
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, i);      <span class="cm">// prints: 1 2 3 4</span>
+    }
+
+    <span class="cm">/* continue example */</span>
+    <span class="kw">for</span>(i=<span class="nm">1</span>; i&lt;=<span class="nm">10</span>; i++) {
+        <span class="kw">if</span>(i == <span class="nm">5</span>) <span class="kw">continue</span>;  <span class="cm">// skips 5</span>
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, i);      <span class="cm">// prints: 1 2 3 4 6 7 8 9 10</span>
+    }
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>break in <strong>nested loops</strong> only exits the innermost loop — not all loops.</li>
+            <li>continue in for loop still executes the <strong>update expression</strong> (i++) before the next iteration.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q7</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Write a C program to print Fibonacci series (loop + recursion)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>fibonacci_loop.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n, a = <span class="nm">0</span>, b = <span class="nm">1</span>, c, i;
+    <span class="fn">printf</span>(<span class="st">"Enter number of terms: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+    <span class="fn">printf</span>(<span class="st">"%d %d "</span>, a, b);
+    <span class="kw">for</span>(i = <span class="nm">2</span>; i &lt; n; i++) {
+        c = a + b;
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, c);
+        a = b;
+        b = c;
+    }
+}
+<span class="cm">// Output for n=8: 0 1 1 2 3 5 8 13</span></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header"><span>fibonacci_recursion.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> <span class="fn">fib</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span>(n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="nm">1</span>) + <span class="fn">fib</span>(n-<span class="nm">2</span>);
+}
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> i, n;
+    <span class="fn">printf</span>(<span class="st">"Enter terms: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; n; i++)
+        <span class="fn">printf</span>(<span class="st">"%d "</span>, <span class="fn">fib</span>(i));
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21... Each term = sum of previous two.</li>
+            <li>Recursive fib is simple to write but <strong>slow</strong> (exponential time) for large n.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q8</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program to check if a number is prime</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>prime.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n, i, flag = <span class="nm">0</span>;
+    <span class="fn">printf</span>(<span class="st">"Enter a number: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+    <span class="kw">if</span>(n &lt; <span class="nm">2</span>) { <span class="fn">printf</span>(<span class="st">"Not prime"</span>); <span class="kw">return</span>; }
+    <span class="kw">for</span>(i = <span class="nm">2</span>; i &lt;= n/<span class="nm">2</span>; i++) {
+        <span class="kw">if</span>(n % i == <span class="nm">0</span>) { flag = <span class="nm">1</span>; <span class="kw">break</span>; }
+    }
+    <span class="kw">if</span>(flag == <span class="nm">0</span>) <span class="fn">printf</span>(<span class="st">"%d is Prime"</span>, n);
+    <span class="kw">else</span> <span class="fn">printf</span>(<span class="st">"%d is Not Prime"</span>, n);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Check divisors only up to <span class="inline-code">n/2</span> (or √n for efficiency). No divisor found → prime.</li>
+            <li>1 is NOT a prime number. 2 is the only even prime.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 3: FUNCTIONS ═══════════════════ -->
+<div class="page" id="p3">
+
+  <div class="chapter">Chapter 3 — Functions & Recursion</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Define function. State difference between function definition and declaration.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Function</strong> — A self-contained block of code that performs a specific task, can accept input (parameters), and may return a value. Functions promote reusability and modularity.</p>
+        <div class="diff-grid">
+          <div class="diff-head left">Function Declaration (Prototype)</div>
+          <div class="diff-head right">Function Definition</div>
+          <div class="diff-cell">Tells compiler about function name, return type, parameters</div>
+          <div class="diff-cell">Contains actual body/code of the function</div>
+          <div class="diff-cell">Written before main() or in header</div>
+          <div class="diff-cell">Can be written before or after main()</div>
+          <div class="diff-cell">Ends with semicolon: <span class="inline-code">int add(int,int);</span></div>
+          <div class="diff-cell">Has curly braces with code block</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header"><span>functions.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b);  <span class="cm">// Declaration (prototype)</span>
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="st">"%d"</span>, <span class="fn">add</span>(<span class="nm">3</span>, <span class="nm">4</span>));   <span class="cm">// Function call</span>
+}
+
+<span class="cm">// Definition</span>
+<span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a + b;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Differentiate between call by value and call by reference (4 points)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="diff-grid">
+          <div class="diff-head left">Call by Value</div>
+          <div class="diff-head right">Call by Reference</div>
+          <div class="diff-cell">A copy of the value is passed</div>
+          <div class="diff-cell">Address (memory location) is passed</div>
+          <div class="diff-cell">Changes do NOT affect original variable</div>
+          <div class="diff-cell">Changes DIRECTLY affect original variable</div>
+          <div class="diff-cell">Uses normal variables as parameters</div>
+          <div class="diff-cell">Uses pointers (*ptr) as parameters</div>
+          <div class="diff-cell">Safer — no accidental modification</div>
+          <div class="diff-cell">Used when we need to modify original</div>
+          <div class="diff-cell">Example: add(a, b)</div>
+          <div class="diff-cell">Example: swap(&amp;a, &amp;b)</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header"><span>call_by.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">/* Call by Value — original unchanged */</span>
+<span class="kw">void</span> <span class="fn">addVal</span>(<span class="kw">int</span> x) { x = x + <span class="nm">10</span>; }
+
+<span class="cm">/* Call by Reference — original changes */</span>
+<span class="kw">void</span> <span class="fn">addRef</span>(<span class="kw">int</span> *x) { *x = *x + <span class="nm">10</span>; }
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a = <span class="nm">5</span>;
+    <span class="fn">addVal</span>(a);          <span class="cm">// a is still 5</span>
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, a);  <span class="cm">// 5</span>
+
+    <span class="fn">addRef</span>(&amp;a);         <span class="cm">// a is now 15</span>
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, a);  <span class="cm">// 15</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Arrays are ALWAYS passed by reference (address of first element is passed automatically).</li>
+            <li>Strings (char arrays) are also always passed by reference.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain recursive function with example (factorial)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Recursion</strong> — When a function calls itself repeatedly until a base condition (termination condition) is reached.</p>
+        <p>Every recursive function needs: 1) <strong>Base case</strong> (stopping condition) 2) <strong>Recursive call</strong> (moves toward base case)</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>factorial_recursion.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">int</span> <span class="fn">factorial</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span>(n == <span class="nm">0</span> || n == <span class="nm">1</span>)  <span class="cm">// base case</span>
+        <span class="kw">return</span> <span class="nm">1</span>;
+    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="nm">1</span>);  <span class="cm">// recursive call</span>
+}
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="fn">printf</span>(<span class="st">"Enter n: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;n);
+    <span class="fn">printf</span>(<span class="st">"%d! = %d"</span>, n, <span class="fn">factorial</span>(n));
+}
+<span class="cm">// factorial(4) = 4*factorial(3)
+//              = 4*3*factorial(2)
+//              = 4*3*2*factorial(1)
+//              = 4*3*2*1 = 24</span></pre>
+        </div>
+        <p><strong>Advantages of recursion:</strong> Code is simpler and shorter; solves complex problems (trees, backtracking) elegantly; mirrors mathematical definitions.</p>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Without a base case → <strong>infinite recursion → stack overflow</strong>.</li>
+            <li>Recursion uses more memory (each call adds a stack frame) than iteration.</li>
+            <li>Exam may ask: trace factorial(4) step by step — be ready to write call stack.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Add two numbers using function / multiply using function</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>add_multiply_functions.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">void</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="fn">printf</span>(<span class="st">"Sum = %d\n"</span>, a + b);
+}
+
+<span class="kw">void</span> <span class="fn">multiply</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="fn">printf</span>(<span class="st">"Product = %d\n"</span>, a * b);
+}
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x, y;
+    <span class="fn">printf</span>(<span class="st">"Enter two numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %d"</span>, &amp;x, &amp;y);
+    <span class="fn">add</span>(x, y);
+    <span class="fn">multiply</span>(x, y);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Calculate gross salary using user-defined function calculate()</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>salary.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">void</span> <span class="fn">calculate</span>(<span class="kw">float</span> basic) {
+    <span class="kw">float</span> da, hra, gross;
+    da    = <span class="nm">0.10</span> * basic;   <span class="cm">// 10% DA</span>
+    hra   = <span class="nm">0.083</span> * basic;  <span class="cm">// 8.3% HRA</span>
+    gross = basic + da + hra;
+    <span class="fn">printf</span>(<span class="st">"Basic = %.2f\n"</span>, basic);
+    <span class="fn">printf</span>(<span class="st">"DA    = %.2f\n"</span>, da);
+    <span class="fn">printf</span>(<span class="st">"HRA   = %.2f\n"</span>, hra);
+    <span class="fn">printf</span>(<span class="st">"Gross = %.2f\n"</span>, gross);
+}
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> empno;
+    <span class="kw">float</span> basic;
+    <span class="fn">printf</span>(<span class="st">"Enter Employee No and Basic Salary: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %f"</span>, &amp;empno, &amp;basic);
+    <span class="fn">printf</span>(<span class="st">"Employee No: %d\n"</span>, empno);
+    <span class="fn">calculate</span>(basic);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 4: ARRAYS ═══════════════════ -->
+<div class="page" id="p4">
+
+  <div class="chapter">Chapter 4 — Arrays (1D and 2D)</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Define array. State two advantages. Explain how elements are accessed.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Array</strong> — A collection of elements of the <em>same data type</em> stored in <em>contiguous memory locations</em>, accessed using a single variable name and an index.</p>
+        <p><strong>Advantages:</strong></p>
+        <ul>
+          <li>Multiple values stored using a single variable name — reduces code complexity.</li>
+          <li>Elements accessed randomly using index in O(1) time — very efficient.</li>
+          <li>Easy to sort and search using loops.</li>
+        </ul>
+        <div class="syntax">// Declaration<br>datatype arrayname[size];<br><br>// Accessing elements<br>arrayname[index]   // index starts from 0</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>array_access.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">5</span>] = {<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>};
+    <span class="kw">int</span> i;
+    <span class="cm">// a[0]=10, a[1]=20, ..., a[4]=50</span>
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; <span class="nm">5</span>; i++)
+        <span class="fn">printf</span>(<span class="st">"a[%d] = %d\n"</span>, i, a[i]);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><strong>Array index starts at 0</strong>. An array of size n has indices 0 to n-1. Accessing a[n] is out of bounds (undefined behaviour).</li>
+            <li><span class="inline-code">int a[5] = {1, 2};</span> — remaining elements are automatically initialized to 0.</li>
+            <li><span class="inline-code">int a[] = {1, 2, 3};</span> — compiler sets size to 3 automatically.</li>
+            <li>Exam trap: array name without index gives the <strong>address</strong> of first element.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Describe declaration and initialization of 2D array with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>A 2D array stores elements in a <strong>table format</strong> (rows and columns). Also called a matrix.</p>
+        <div class="syntax">datatype arrayname[rows][cols];<br>// Example:<br>int matrix[3][3];</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>2d_array.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="cm">/* Initialization at declaration */</span>
+    <span class="kw">int</span> a[<span class="nm">3</span>][<span class="nm">3</span>] = {
+        {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>},
+        {<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>},
+        {<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>}
+    };
+
+    <span class="kw">int</span> i, j;
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; <span class="nm">3</span>; i++) {
+        <span class="kw">for</span>(j = <span class="nm">0</span>; j &lt; <span class="nm">3</span>; j++)
+            <span class="fn">printf</span>(<span class="st">"%d "</span>, a[i][j]);
+        <span class="fn">printf</span>(<span class="st">"\n"</span>);
+    }
+    <span class="cm">// Access element at row 1, col 2: a[1][2] = 6</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Memory layout: 2D arrays are stored in <strong>row-major order</strong> — all of row 0 first, then row 1, etc.</li>
+            <li><span class="inline-code">a[i][j]</span> is located at address: base + (i * cols + j) * sizeof(datatype).</li>
+            <li>When declaring parameter in a function, first dimension can be omitted but NOT second: <span class="inline-code">void f(int a[][3])</span>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Program: Add two 3×3 matrices</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>matrix_add.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">3</span>][<span class="nm">3</span>], b[<span class="nm">3</span>][<span class="nm">3</span>], c[<span class="nm">3</span>][<span class="nm">3</span>], i, j;
+
+    <span class="fn">printf</span>(<span class="st">"Enter Matrix A (3x3):\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++)
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;a[i][j]);
+
+    <span class="fn">printf</span>(<span class="st">"Enter Matrix B (3x3):\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++)
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;b[i][j]);
+
+    <span class="cm">/* Addition */</span>
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++)
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            c[i][j] = a[i][j] + b[i][j];
+
+    <span class="fn">printf</span>(<span class="st">"Sum Matrix:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++) {
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            <span class="fn">printf</span>(<span class="st">"%d\t"</span>, c[i][j]);
+        <span class="fn">printf</span>(<span class="st">"\n"</span>);
+    }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Multiply two 3×3 matrices</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>matrix_multiply.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">3</span>][<span class="nm">3</span>], b[<span class="nm">3</span>][<span class="nm">3</span>], c[<span class="nm">3</span>][<span class="nm">3</span>] = {<span class="nm">0</span>};
+    <span class="kw">int</span> i, j, k;
+
+    <span class="cm">/* Input a and b matrices here (same as above) */</span>
+
+    <span class="cm">/* Multiplication: c[i][j] = sum of a[i][k]*b[k][j] */</span>
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++)
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            <span class="kw">for</span>(k=<span class="nm">0</span>; k&lt;<span class="nm">3</span>; k++)
+                c[i][j] += a[i][k] * b[k][j];
+
+    <span class="fn">printf</span>(<span class="st">"Result:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">3</span>; i++) {
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;<span class="nm">3</span>; j++)
+            <span class="fn">printf</span>(<span class="st">"%d\t"</span>, c[i][j]);
+        <span class="fn">printf</span>(<span class="st">"\n"</span>);
+    }
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Matrix multiplication needs <strong>3 nested loops</strong>. Initialize c to 0 before using += accumulator.</li>
+            <li>Matrix multiplication is only possible if cols of A = rows of B.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Find largest number from an array of 10 numbers</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>largest_array.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">10</span>], i, max;
+    <span class="fn">printf</span>(<span class="st">"Enter 10 numbers:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;<span class="nm">10</span>; i++)
+        <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;a[i]);
+
+    max = a[<span class="nm">0</span>];   <span class="cm">// assume first is largest</span>
+    <span class="kw">for</span>(i=<span class="nm">1</span>; i&lt;<span class="nm">10</span>; i++) {
+        <span class="kw">if</span>(a[i] &gt; max)
+            max = a[i];
+    }
+    <span class="fn">printf</span>(<span class="st">"Largest = %d"</span>, max);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Sort array in ascending order (Bubble Sort)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>bubble_sort.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">10</span>], i, j, temp, n = <span class="nm">10</span>;
+    <span class="fn">printf</span>(<span class="st">"Enter 10 numbers:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;n; i++) <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;a[i]);
+
+    <span class="cm">/* Bubble sort */</span>
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;n-<span class="nm">1</span>; i++) {
+        <span class="kw">for</span>(j=<span class="nm">0</span>; j&lt;n-i-<span class="nm">1</span>; j++) {
+            <span class="kw">if</span>(a[j] &gt; a[j+<span class="nm">1</span>]) {
+                temp = a[j];
+                a[j] = a[j+<span class="nm">1</span>];
+                a[j+<span class="nm">1</span>] = temp;
+            }
+        }
+    }
+    <span class="fn">printf</span>(<span class="st">"Sorted: "</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>; i&lt;n; i++) <span class="fn">printf</span>(<span class="st">"%d "</span>, a[i]);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Bubble sort: inner loop runs n-i-1 times (already sorted elements at end are skipped).</li>
+            <li>Swap always uses a temp variable: <span class="inline-code">temp=a[j]; a[j]=a[j+1]; a[j+1]=temp;</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 5: STRINGS ═══════════════════ -->
+<div class="page" id="p5">
+
+  <div class="chapter">Chapter 5 — Strings & String Functions</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">State ways of declaration and initialization of string variables</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>A <strong>string</strong> in C is an array of characters terminated by a <strong>null character '\0'</strong>.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>strings_init.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="cm">/* Method 1: char array with initialization */</span>
+<span class="kw">char</span> name[<span class="nm">20</span>] = <span class="st">"Hello"</span>;
+
+<span class="cm">/* Method 2: char array with char list */</span>
+<span class="kw">char</span> name[] = {<span class="st">'H'</span>,<span class="st">'e'</span>,<span class="st">'l'</span>,<span class="st">'l'</span>,<span class="st">'o'</span>,<span class="st">'\0'</span>};
+
+<span class="cm">/* Method 3: pointer to string literal */</span>
+<span class="kw">char</span> *name = <span class="st">"Hello"</span>;
+
+<span class="cm">/* Input using scanf (no spaces) */</span>
+<span class="fn">scanf</span>(<span class="st">"%s"</span>, name);
+
+<span class="cm">/* Input using gets (includes spaces) */</span>
+<span class="fn">gets</span>(name);
+
+<span class="cm">/* Output */</span>
+<span class="fn">printf</span>(<span class="st">"%s"</span>, name);
+<span class="fn">puts</span>(name);  <span class="cm">// same as printf with newline</span></pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Always allocate <strong>1 extra byte</strong> for '\0'. "Hello" needs char[6], not char[5].</li>
+            <li><span class="inline-code">scanf("%s")</span> stops at space. Use <span class="inline-code">gets()</span> to read full line with spaces.</li>
+            <li>Array size must be specified when declaring without initialization.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain strlen() and strcpy() with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>strlen(s)</strong> — Returns the <em>length</em> of string s (number of characters before '\0').</p>
+        <p><strong>strcpy(dest, src)</strong> — <em>Copies</em> src string into dest string, including '\0'.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>strlen_strcpy.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> s1[<span class="nm">20</span>] = <span class="st">"Hello"</span>;
+    <span class="kw">char</span> s2[<span class="nm">20</span>];
+
+    <span class="fn">printf</span>(<span class="st">"Length = %lu\n"</span>, <span class="fn">strlen</span>(s1)); <span class="cm">// 5</span>
+    <span class="fn">strcpy</span>(s2, s1);
+    <span class="fn">printf</span>(<span class="st">"Copied: %s\n"</span>, s2);            <span class="cm">// Hello</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><span class="inline-code">strlen</span> does NOT count '\0'. "Hello" → length 5.</li>
+            <li><span class="inline-code">sizeof("Hello")</span> returns 6 (includes '\0') — different from strlen!</li>
+            <li>strcpy order: <strong>destination first</strong>, then source. Like assignment: dest = src.</li>
+            <li>Need <span class="inline-code">#include &lt;string.h&gt;</span> for all string functions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain strcmp() and strcat() with example</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>strcmp(s1, s2)</strong> — Compares two strings. Returns 0 if equal, positive if s1 &gt; s2, negative if s1 &lt; s2.</p>
+        <p><strong>strcat(s1, s2)</strong> — Appends (concatenates) s2 to the end of s1. s1 must be large enough.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>strcmp_strcat.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> s1[<span class="nm">50</span>] = <span class="st">"Hello"</span>;
+    <span class="kw">char</span> s2[] = <span class="st">" World"</span>;
+
+    <span class="cm">/* strcmp */</span>
+    <span class="kw">if</span>(<span class="fn">strcmp</span>(s1, s2) == <span class="nm">0</span>)
+        <span class="fn">printf</span>(<span class="st">"Strings are equal\n"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="st">"Strings are different\n"</span>);
+
+    <span class="cm">/* strcat */</span>
+    <span class="fn">strcat</span>(s1, s2);
+    <span class="fn">printf</span>(<span class="st">"Concatenated: %s\n"</span>, s1); <span class="cm">// Hello World</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>strcmp returns 0 for equal — NOT 1. Beginners confuse this with true/false.</li>
+            <li>strcat modifies s1 — s1 must have enough space for s1 + s2.</li>
+            <li>strcmp is case-sensitive: "hello" ≠ "Hello".</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Accept two strings, display lengths, concatenate and display</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>strings_program.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> s1[<span class="nm">100</span>], s2[<span class="nm">50</span>];
+    <span class="fn">printf</span>(<span class="st">"Enter string 1: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, s1);
+    <span class="fn">printf</span>(<span class="st">"Enter string 2: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, s2);
+
+    <span class="fn">printf</span>(<span class="st">"Length of s1 = %lu\n"</span>, <span class="fn">strlen</span>(s1));
+    <span class="fn">printf</span>(<span class="st">"Length of s2 = %lu\n"</span>, <span class="fn">strlen</span>(s2));
+
+    <span class="fn">strcat</span>(s1, s2);
+    <span class="fn">printf</span>(<span class="st">"Concatenated string: %s\n"</span>, s1);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Check if string is palindrome</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>palindrome.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> s[<span class="nm">50</span>], rev[<span class="nm">50</span>];
+    <span class="fn">printf</span>(<span class="st">"Enter a string: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, s);
+
+    <span class="fn">strcpy</span>(rev, s);
+    <span class="fn">strrev</span>(rev);   <span class="cm">// reverses string</span>
+
+    <span class="kw">if</span>(<span class="fn">strcmp</span>(s, rev) == <span class="nm">0</span>)
+        <span class="fn">printf</span>(<span class="st">"\"%s\" is a Palindrome"</span>, s);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="st">"\"%s\" is NOT a Palindrome"</span>, s);
+}
+<span class="cm">// "madam" reversed = "madam" → Palindrome
+// "hello" reversed = "olleh" → Not palindrome</span></pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li><span class="inline-code">strrev()</span> is available in some compilers (Turbo C) but not GCC. If not available, write manual reverse using a loop.</li>
+            <li>Palindrome examples: "madam", "racecar", "level", "12321".</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Copy string without using strcpy</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>manual_copy.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">char</span> src[<span class="nm">50</span>], dest[<span class="nm">50</span>];
+    <span class="kw">int</span> i = <span class="nm">0</span>;
+    <span class="fn">printf</span>(<span class="st">"Enter string: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, src);
+
+    <span class="kw">while</span>(src[i] != <span class="st">'\0'</span>) {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = <span class="st">'\0'</span>;  <span class="cm">// important: add null terminator</span>
+    <span class="fn">printf</span>(<span class="st">"Copied: %s"</span>, dest);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Always add <span class="inline-code">'\0'</span> at end of manually copied string — without it, printf will print garbage.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 6: POINTERS ═══════════════════ -->
+<div class="page" id="p6">
+
+  <div class="chapter">Chapter 6 — Pointers</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Define pointer. State use of * and & operators. Explain declaration and initialization.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Pointer</strong> — A variable that stores the <em>memory address</em> of another variable instead of storing a data value directly.</p>
+        <p><strong>&amp; (Address-of operator)</strong> — Returns the memory address of a variable. Used to initialize pointers.</p>
+        <p><strong>* (Dereference/Indirection operator)</strong> — Accesses/modifies the value at the address stored in a pointer. Also used to declare a pointer variable.</p>
+        <div class="syntax">datatype *pointer_name;   // Declaration<br>pointer_name = &variable; // Initialization</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>pointer_basics.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a = <span class="nm">50</span>;
+    <span class="kw">int</span> *p;         <span class="cm">// p is a pointer to int</span>
+    p = &amp;a;         <span class="cm">// p stores address of a</span>
+
+    <span class="fn">printf</span>(<span class="st">"Value of a  = %d\n"</span>, a);    <span class="cm">// 50</span>
+    <span class="fn">printf</span>(<span class="st">"Address of a= %p\n"</span>, &amp;a);   <span class="cm">// e.g. 0x7ffd</span>
+    <span class="fn">printf</span>(<span class="st">"p holds     = %p\n"</span>, p);    <span class="cm">// same address</span>
+    <span class="fn">printf</span>(<span class="st">"Value via p = %d\n"</span>, *p);   <span class="cm">// 50 (dereferencing)</span>
+
+    *p = <span class="nm">100</span>;    <span class="cm">// changes a through pointer</span>
+    <span class="fn">printf</span>(<span class="st">"New a = %d\n"</span>, a);    <span class="cm">// 100</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points — Pointer meaning decoding</div>
+          <ul>
+            <li><span class="inline-code">int *p</span> — p is a pointer to an integer</li>
+            <li><span class="inline-code">int **p</span> — p is a pointer to a pointer to int (double pointer)</li>
+            <li><span class="inline-code">*p</span> — value at address stored in p (dereference)</li>
+            <li><span class="inline-code">&a</span> — address of variable a</li>
+            <li>Exam question: <span class="inline-code">int var=50; int *p1,*p2; p1=&var; p2=p1;</span><br>
+              → var=50, p1=address of var, p2=same address as p1, *p1=50, *p2=50</li>
+            <li><strong>Null pointer</strong>: <span class="inline-code">int *p = NULL;</span> — pointer not pointing to anything. Dereferencing NULL crashes program.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain pointer arithmetic with all operations</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>Arithmetic operations that can be performed on pointers:</p>
+        <table>
+          <tr><th>Operation</th><th>Meaning</th><th>Example (int *p, 4-byte int)</th></tr>
+          <tr><td>p++ or p+1</td><td>Move to next element</td><td>Address increases by 4</td></tr>
+          <tr><td>p-- or p-1</td><td>Move to previous element</td><td>Address decreases by 4</td></tr>
+          <tr><td>p + n</td><td>Move n elements forward</td><td>Address + n*sizeof(int)</td></tr>
+          <tr><td>p2 - p1</td><td>Number of elements between</td><td>Returns integer count</td></tr>
+        </table>
+        <div class="code-wrap">
+          <div class="code-header"><span>pointer_arithmetic.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">5</span>] = {<span class="nm">10</span>,<span class="nm">20</span>,<span class="nm">30</span>,<span class="nm">40</span>,<span class="nm">50</span>};
+    <span class="kw">int</span> *p = a;  <span class="cm">// p points to a[0]</span>
+
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, *p);    <span class="cm">// 10 (a[0])</span>
+    p++;
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, *p);    <span class="cm">// 20 (a[1])</span>
+    p += <span class="nm">2</span>;
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, *p);    <span class="cm">// 40 (a[3])</span>
+    p--;
+    <span class="fn">printf</span>(<span class="st">"%d\n"</span>, *p);    <span class="cm">// 30 (a[2])</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>p++ increments by <strong>sizeof(datatype)</strong>, not by 1 byte. For int: +4 bytes.</li>
+            <li>You <strong>cannot multiply or divide</strong> pointers: p*2 is invalid.</li>
+            <li>You <strong>cannot add two pointers</strong>: p1+p2 is invalid. But p1-p2 is valid (gives distance between them).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain advantages of pointers (4 points)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <ul>
+          <li><strong>Dynamic memory allocation</strong> — Using malloc(), calloc() to allocate memory at runtime.</li>
+          <li><strong>Pass by reference</strong> — Functions can modify original variables through pointers.</li>
+          <li><strong>Efficient array access</strong> — Array traversal using pointer arithmetic is faster than index-based access.</li>
+          <li><strong>Data structures</strong> — Linked lists, trees, graphs require pointers to link nodes.</li>
+          <li><strong>Multiple return values</strong> — Function can return multiple values via pointer parameters.</li>
+          <li><strong>Reduced code size</strong> — Avoids copying large data structures; pass address instead.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Swap two numbers using pointers</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>swap_pointers.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">void</span> <span class="fn">swap</span>(<span class="kw">int</span> *a, <span class="kw">int</span> *b) {
+    <span class="kw">int</span> temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x, y;
+    <span class="fn">printf</span>(<span class="st">"Enter two numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %d"</span>, &amp;x, &amp;y);
+    <span class="fn">printf</span>(<span class="st">"Before: x=%d y=%d\n"</span>, x, y);
+    <span class="fn">swap</span>(&amp;x, &amp;y);
+    <span class="fn">printf</span>(<span class="st">"After:  x=%d y=%d\n"</span>, x, y);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Call with <span class="inline-code">&x, &y</span> — addresses. Function receives <span class="inline-code">*a, *b</span> — pointers.</li>
+            <li>Without pointers (call by value), swap would NOT work — original x and y unchanged.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Access array elements using pointer</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>array_pointer.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">5</span>] = {<span class="nm">10</span>,<span class="nm">20</span>,<span class="nm">30</span>,<span class="nm">40</span>,<span class="nm">50</span>};
+    <span class="kw">int</span> *p, i;
+    p = a;   <span class="cm">// or p = &a[0];</span>
+
+    <span class="fn">printf</span>(<span class="st">"Array elements using pointer:\n"</span>);
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; <span class="nm">5</span>; i++)
+        <span class="fn">printf</span>(<span class="st">"a[%d] = %d\n"</span>, i, *(p+i));
+
+    <span class="cm">/* These are all equivalent: */</span>
+    <span class="cm">// a[i] == *(a+i) == *(p+i) == p[i]</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Array name is a <strong>constant pointer</strong> — you cannot do a++ (illegal), but p++ is fine.</li>
+            <li><span class="inline-code">a[i]</span> and <span class="inline-code">*(a+i)</span> are exactly equivalent internally.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Find product of two numbers using pointer</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>product_pointer.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a, b, product;
+    <span class="kw">int</span> *p1, *p2;
+    <span class="fn">printf</span>(<span class="st">"Enter two numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %d"</span>, &amp;a, &amp;b);
+    p1 = &amp;a;
+    p2 = &amp;b;
+    product = (*p1) * (*p2);
+    <span class="fn">printf</span>(<span class="st">"Product = %d"</span>, product);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 7: STRUCTURES ═══════════════════ -->
+<div class="page" id="p7">
+
+  <div class="chapter">Chapter 7 — Structures</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q1</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Define structure. Explain declaration with example. State two features.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p><strong>Structure</strong> — A user-defined data type that groups together variables of <em>different data types</em> under a single name. Each variable inside is called a <strong>member</strong>.</p>
+        <p><strong>Features:</strong></p>
+        <ul>
+          <li>Can hold different data types (int, float, char) in one unit — unlike arrays.</li>
+          <li>Memory is allocated for all members together.</li>
+          <li>Members accessed using dot (.) operator.</li>
+        </ul>
+        <div class="syntax">struct tag_name {<br>&nbsp;&nbsp;datatype member1;<br>&nbsp;&nbsp;datatype member2;<br>};<br>struct tag_name variable_name;</div>
+        <div class="code-wrap">
+          <div class="code-header"><span>structure_basic.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> student {
+    <span class="kw">int</span>   roll_no;
+    <span class="kw">char</span>  name[<span class="nm">50</span>];
+    <span class="kw">float</span> marks;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> student s;
+
+    <span class="fn">printf</span>(<span class="st">"Enter roll no, name, marks: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d %s %f"</span>, &amp;s.roll_no, s.name, &amp;s.marks);
+
+    <span class="fn">printf</span>(<span class="st">"Roll No: %d\n"</span>, s.roll_no);
+    <span class="fn">printf</span>(<span class="st">"Name:    %s\n"</span>, s.name);
+    <span class="fn">printf</span>(<span class="st">"Marks:   %.2f\n"</span>, s.marks);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Structure definition ends with a <strong>semicolon</strong> after closing brace: <span class="inline-code">};</span></li>
+            <li>Structure definition does NOT allocate memory — only declaring a variable does.</li>
+            <li>For string member, use <span class="inline-code">scanf("%s", s.name)</span> — no & because name is already an address.</li>
+            <li>Use <strong>dot (.) operator</strong> with variable. Use <strong>arrow (-&gt;) operator</strong> with pointer to struct.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q2</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain array of structures with example (book with 10 books)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>An <strong>array of structures</strong> allows storing multiple records of the same structure type.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span>array_of_struct.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> book {
+    <span class="kw">int</span>   book_no;
+    <span class="kw">char</span>  book_title[<span class="nm">50</span>];
+    <span class="kw">float</span> book_price;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> book b[<span class="nm">10</span>];
+    <span class="kw">int</span> i;
+
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; <span class="nm">10</span>; i++) {
+        <span class="fn">printf</span>(<span class="st">"Enter Book %d (no title price): "</span>, i+<span class="nm">1</span>);
+        <span class="fn">scanf</span>(<span class="st">"%d %s %f"</span>,
+              &amp;b[i].book_no,
+              b[i].book_title,
+              &amp;b[i].book_price);
+    }
+
+    <span class="fn">printf</span>(<span class="st">"\n--- Book List ---\n"</span>);
+    <span class="kw">for</span>(i = <span class="nm">0</span>; i &lt; <span class="nm">10</span>; i++) {
+        <span class="fn">printf</span>(<span class="st">"%d  %-20s  %.2f\n"</span>,
+               b[i].book_no,
+               b[i].book_title,
+               b[i].book_price);
+    }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q3</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Declare structure DATE with day, month, year and assign initial values</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>date_struct.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> DATE {
+    <span class="kw">int</span> day;
+    <span class="kw">int</span> month;
+    <span class="kw">int</span> year;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="cm">/* Initialization at declaration */</span>
+    <span class="kw">struct</span> DATE d = {<span class="nm">15</span>, <span class="nm">8</span>, <span class="nm">2024</span>};
+
+    <span class="fn">printf</span>(<span class="st">"Date: %d/%d/%d"</span>, d.day, d.month, d.year);
+    <span class="cm">// Output: Date: 15/8/2024</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q4</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Declare structure circle with radius, area, perimeter. Accept radius, find area and perimeter.</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>circle_struct.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#define PI 3.14159</span>
+
+<span class="kw">struct</span> circle {
+    <span class="kw">float</span> radius;
+    <span class="kw">float</span> area;
+    <span class="kw">float</span> perimeter;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> circle c;
+
+    <span class="fn">printf</span>(<span class="st">"Enter radius: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%f"</span>, &amp;c.radius);
+
+    c.area      = PI * c.radius * c.radius;
+    c.perimeter = <span class="nm">2</span> * PI * c.radius;
+
+    <span class="fn">printf</span>(<span class="st">"Area      = %.2f\n"</span>, c.area);
+    <span class="fn">printf</span>(<span class="st">"Perimeter = %.2f\n"</span>, c.perimeter);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q5</span>
+      <span class="qtag tag-must">Must Know</span>
+      <span class="qtext">Explain arrow (->) operator with example (pointer to structure)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <p>The <strong>arrow operator (-&gt;)</strong> is used to access structure members through a <em>pointer to a structure</em>.</p>
+        <p><span class="inline-code">ptr-&gt;member</span> is equivalent to <span class="inline-code">(*ptr).member</span></p>
+        <div class="code-wrap">
+          <div class="code-header"><span>arrow_operator.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> student {
+    <span class="kw">int</span>  roll;
+    <span class="kw">char</span> name[<span class="nm">30</span>];
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> student s = {<span class="nm">10</span>, <span class="st">"Riya"</span>};
+    <span class="kw">struct</span> student *p = &amp;s;  <span class="cm">// pointer to struct</span>
+
+    <span class="cm">/* Two equivalent ways to access: */</span>
+    <span class="fn">printf</span>(<span class="st">"%d %s\n"</span>, (*p).roll, (*p).name);  <span class="cm">// old way</span>
+    <span class="fn">printf</span>(<span class="st">"%d %s\n"</span>, p-&gt;roll, p-&gt;name);      <span class="cm">// arrow way (preferred)</span>
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Dot (.) is used with <strong>structure variable</strong>. Arrow (-&gt;) is used with <strong>pointer to structure</strong>.</li>
+            <li>Exam question: "When do we use -&gt; operator?" — Answer: when accessing members via a pointer.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q6</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Program: Structure student with roll_no, name, marks in 3 subjects, display % marks</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>student_percentage.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> student {
+    <span class="kw">int</span>   roll_no;
+    <span class="kw">char</span>  name[<span class="nm">50</span>];
+    <span class="kw">float</span> m1, m2, m3;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> student s;
+    <span class="kw">float</span> total, percent;
+
+    <span class="fn">printf</span>(<span class="st">"Enter Roll No: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;s.roll_no);
+    <span class="fn">printf</span>(<span class="st">"Enter Name: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, s.name);
+    <span class="fn">printf</span>(<span class="st">"Enter marks in 3 subjects: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%f %f %f"</span>, &amp;s.m1, &amp;s.m2, &amp;s.m3);
+
+    total   = s.m1 + s.m2 + s.m3;
+    percent = (total / <span class="nm">300.0</span>) * <span class="nm">100</span>;
+
+    <span class="fn">printf</span>(<span class="st">"Roll No: %d\n"</span>, s.roll_no);
+    <span class="fn">printf</span>(<span class="st">"Name:    %s\n"</span>, s.name);
+    <span class="fn">printf</span>(<span class="st">"Total:   %.2f\n"</span>, total);
+    <span class="fn">printf</span>(<span class="st">"Percent: %.2f%%\n"</span>, percent);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">Q7</span>
+      <span class="qtag tag-code">Program</span>
+      <span class="qtext">Write structure 'account' with account_no, account_type, account_name, account_balance</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>account_struct.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> account {
+    <span class="kw">int</span>   account_no;
+    <span class="kw">char</span>  account_type[<span class="nm">20</span>];   <span class="cm">// Savings/Current</span>
+    <span class="kw">char</span>  account_name[<span class="nm">50</span>];
+    <span class="kw">float</span> account_balance;
+};
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> account a;
+    <span class="fn">printf</span>(<span class="st">"Enter Account No: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>, &amp;a.account_no);
+    <span class="fn">printf</span>(<span class="st">"Enter Account Type: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, a.account_type);
+    <span class="fn">printf</span>(<span class="st">"Enter Account Name: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%s"</span>, a.account_name);
+    <span class="fn">printf</span>(<span class="st">"Enter Balance: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%f"</span>, &amp;a.account_balance);
+
+    <span class="fn">printf</span>(<span class="st">"\nAccount No:   %d\n"</span>, a.account_no);
+    <span class="fn">printf</span>(<span class="st">"Account Type: %s\n"</span>, a.account_type);
+    <span class="fn">printf</span>(<span class="st">"Account Name: %s\n"</span>, a.account_name);
+    <span class="fn">printf</span>(<span class="st">"Balance:      %.2f\n"</span>, a.account_balance);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ PAGE 8: PROGRAMS (ALL) ═══════════════════ -->
+<div class="page" id="p8">
+
+  <div class="chapter">Chapter 8 — All Important Programs at a Glance</div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P1</span>
+      <span class="qtag tag-must">6/6 Papers</span>
+      <span class="qtext">Swap two numbers using pointers</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>swap.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">swap</span>(<span class="kw">int</span> *a, <span class="kw">int</span> *b) {
+    <span class="kw">int</span> t = *a; *a = *b; *b = t;
+}
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x, y;
+    <span class="fn">scanf</span>(<span class="st">"%d %d"</span>, &amp;x, &amp;y);
+    <span class="fn">swap</span>(&amp;x, &amp;y);
+    <span class="fn">printf</span>(<span class="st">"x=%d y=%d"</span>, x, y);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P2</span>
+      <span class="qtag tag-must">5/6 Papers</span>
+      <span class="qtext">Add two 3×3 matrices</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>matrix_add.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a[<span class="nm">3</span>][<span class="nm">3</span>],b[<span class="nm">3</span>][<span class="nm">3</span>],c[<span class="nm">3</span>][<span class="nm">3</span>],i,j;
+    <span class="fn">printf</span>(<span class="st">"Enter Matrix A:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>;i&lt;<span class="nm">3</span>;i++) <span class="kw">for</span>(j=<span class="nm">0</span>;j&lt;<span class="nm">3</span>;j++) <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;a[i][j]);
+    <span class="fn">printf</span>(<span class="st">"Enter Matrix B:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>;i&lt;<span class="nm">3</span>;i++) <span class="kw">for</span>(j=<span class="nm">0</span>;j&lt;<span class="nm">3</span>;j++) <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;b[i][j]);
+    <span class="kw">for</span>(i=<span class="nm">0</span>;i&lt;<span class="nm">3</span>;i++) <span class="kw">for</span>(j=<span class="nm">0</span>;j&lt;<span class="nm">3</span>;j++) c[i][j]=a[i][j]+b[i][j];
+    <span class="fn">printf</span>(<span class="st">"Sum:\n"</span>);
+    <span class="kw">for</span>(i=<span class="nm">0</span>;i&lt;<span class="nm">3</span>;i++){<span class="kw">for</span>(j=<span class="nm">0</span>;j&lt;<span class="nm">3</span>;j++)<span class="fn">printf</span>(<span class="st">"%d "</span>,c[i][j]);<span class="fn">printf</span>(<span class="st">"\n"</span>);}
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P3</span>
+      <span class="qtag tag-must">6/6 Papers</span>
+      <span class="qtext">Add two numbers using function</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>add_func.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) { <span class="kw">return</span> a+b; }
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x,y;
+    <span class="fn">scanf</span>(<span class="st">"%d %d"</span>,&amp;x,&amp;y);
+    <span class="fn">printf</span>(<span class="st">"Sum=%d"</span>,<span class="fn">add</span>(x,y));
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P4</span>
+      <span class="qtag tag-must">5/6 Papers</span>
+      <span class="qtext">Factorial using recursion</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>factorial.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> <span class="fn">fact</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span>(n&lt;=<span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>;
+    <span class="kw">return</span> n*<span class="fn">fact</span>(n-<span class="nm">1</span>);
+}
+<span class="kw">void</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n; <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="fn">printf</span>(<span class="st">"%d!=%d"</span>,n,<span class="fn">fact</span>(n));
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P5</span>
+      <span class="qtag tag-must">4/6 Papers</span>
+      <span class="qtext">Fibonacci series (recursion)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>fib.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> <span class="fn">fib</span>(<span class="kw">int</span> n){<span class="kw">if</span>(n&lt;=<span class="nm">1</span>)<span class="kw">return</span> n;<span class="kw">return</span> <span class="fn">fib</span>(n-<span class="nm">1</span>)+<span class="fn">fib</span>(n-<span class="nm">2</span>);}
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">int</span> i,n; <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="kw">for</span>(i=<span class="nm">0</span>;i&lt;n;i++) <span class="fn">printf</span>(<span class="st">"%d "</span>,<span class="fn">fib</span>(i));
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P6</span>
+      <span class="qtag tag-must">6/6 Papers</span>
+      <span class="qtext">Positive / Negative check</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>posneg.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">int</span> n; <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="kw">if</span>(n&gt;<span class="nm">0</span>) <span class="fn">printf</span>(<span class="st">"Positive"</span>);
+    <span class="kw">else if</span>(n&lt;<span class="nm">0</span>) <span class="fn">printf</span>(<span class="st">"Negative"</span>);
+    <span class="kw">else</span> <span class="fn">printf</span>(<span class="st">"Zero"</span>);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P7</span>
+      <span class="qtag tag-must">5/6 Papers</span>
+      <span class="qtext">Structure: student with roll no, name, marks</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>student.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">struct</span> student { <span class="kw">int</span> roll; <span class="kw">char</span> name[<span class="nm">50</span>]; <span class="kw">float</span> marks; };
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">struct</span> student s;
+    <span class="fn">scanf</span>(<span class="st">"%d %s %f"</span>,&amp;s.roll,s.name,&amp;s.marks);
+    <span class="fn">printf</span>(<span class="st">"Roll:%d Name:%s Marks:%.2f"</span>,s.roll,s.name,s.marks);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P8</span>
+      <span class="qtag tag-must">5/6 Papers</span>
+      <span class="qtext">Largest of three numbers (nested if-else)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>largest3.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">int</span> a,b,c; <span class="fn">scanf</span>(<span class="st">"%d%d%d"</span>,&amp;a,&amp;b,&amp;c);
+    <span class="kw">if</span>(a&gt;b){ <span class="kw">if</span>(a&gt;c)<span class="fn">printf</span>(<span class="st">"Largest=%d"</span>,a); <span class="kw">else</span><span class="fn">printf</span>(<span class="st">"Largest=%d"</span>,c); }
+    <span class="kw">else</span>{ <span class="kw">if</span>(b&gt;c)<span class="fn">printf</span>(<span class="st">"Largest=%d"</span>,b); <span class="kw">else</span><span class="fn">printf</span>(<span class="st">"Largest=%d"</span>,c); }
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P9</span>
+      <span class="qtag tag-must">5/6 Papers</span>
+      <span class="qtext">String: accept two strings, find lengths, concatenate</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>strings2.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;string.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">char</span> s1[<span class="nm">100</span>],s2[<span class="nm">50</span>];
+    <span class="fn">scanf</span>(<span class="st">"%s%s"</span>,s1,s2);
+    <span class="fn">printf</span>(<span class="st">"Len1=%lu Len2=%lu\n"</span>,<span class="fn">strlen</span>(s1),<span class="fn">strlen</span>(s2));
+    <span class="fn">strcat</span>(s1,s2);
+    <span class="fn">printf</span>(<span class="st">"Concat:%s"</span>,s1);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P10</span>
+      <span class="qtag tag-must">4/6 Papers</span>
+      <span class="qtext">Print table of a number</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>table.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">int</span> n,i; <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="kw">for</span>(i=<span class="nm">1</span>;i&lt;=<span class="nm">10</span>;i++)
+        <span class="fn">printf</span>(<span class="st">"%d x %d = %d\n"</span>,n,i,n*i);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P11</span>
+      <span class="qtag tag-must">4/6 Papers</span>
+      <span class="qtext">Circle structure (radius, area, perimeter)</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>circle.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#define PI 3.14159</span>
+<span class="kw">struct</span> circle { <span class="kw">float</span> r,a,p; };
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">struct</span> circle c;
+    <span class="fn">scanf</span>(<span class="st">"%f"</span>,&amp;c.r);
+    c.a=PI*c.r*c.r; c.p=<span class="nm">2</span>*PI*c.r;
+    <span class="fn">printf</span>(<span class="st">"Area=%.2f Perimeter=%.2f"</span>,c.a,c.p);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P12</span>
+      <span class="qtag tag-must">3/6 Papers</span>
+      <span class="qtext">Sum of natural numbers / sum of digits</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>sum_natural.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">int</span> n,i,sum=<span class="nm">0</span>;
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="kw">for</span>(i=<span class="nm">1</span>;i&lt;=n;i++) sum+=i;
+    <span class="fn">printf</span>(<span class="st">"Sum=%d"</span>,sum);
+}
+
+<span class="cm">/* Sum of digits of a number */</span>
+<span class="kw">void</span> <span class="fn">sumDigits</span>(){
+    <span class="kw">int</span> n,sum=<span class="nm">0</span>;
+    <span class="fn">scanf</span>(<span class="st">"%d"</span>,&amp;n);
+    <span class="kw">while</span>(n!=<span class="nm">0</span>){ sum+=n%<span class="nm">10</span>; n/=<span class="nm">10</span>; }
+    <span class="fn">printf</span>(<span class="st">"Sum of digits=%d"</span>,sum);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P13</span>
+      <span class="qtag tag-code">Bonus</span>
+      <span class="qtext">Check vowel or consonant</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>vowel.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">char</span> c; <span class="fn">scanf</span>(<span class="st">"%c"</span>,&amp;c);
+    <span class="kw">if</span>(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'||
+       c=='A'||c=='E'||c=='I'||c=='O'||c=='U')
+        <span class="fn">printf</span>(<span class="st">"Vowel"</span>);
+    <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="st">"Consonant"</span>);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P14</span>
+      <span class="qtag tag-code">Bonus</span>
+      <span class="qtext">Gross salary: Basic + 5% DA + 15% TA</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>salary2.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">float</span> basic,da,ta,gross;
+    <span class="fn">printf</span>(<span class="st">"Enter basic salary: "</span>);
+    <span class="fn">scanf</span>(<span class="st">"%f"</span>,&amp;basic);
+    da=<span class="nm">0.05</span>*basic;   <span class="cm">// 5% DA</span>
+    ta=<span class="nm">0.15</span>*basic;   <span class="cm">// 15% TA</span>
+    gross=basic+da+ta;
+    <span class="fn">printf</span>(<span class="st">"DA=%.2f TA=%.2f Gross=%.2f"</span>,da,ta,gross);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qcard">
+    <div class="qhead" onclick="toggle(this)">
+      <span class="qnum">P15</span>
+      <span class="qtag tag-code">Bonus</span>
+      <span class="qtext">Quadratic equation roots: ax²+bx+c=0</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="qbody">
+      <div class="answer">
+        <div class="code-wrap">
+          <div class="code-header"><span>quadratic.c</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+          <pre><span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;math.h&gt;</span>
+<span class="kw">void</span> <span class="fn">main</span>(){
+    <span class="kw">float</span> a,b,c,disc,r1,r2;
+    <span class="fn">scanf</span>(<span class="st">"%f%f%f"</span>,&amp;a,&amp;b,&amp;c);
+    disc = b*b - <span class="nm">4</span>*a*c;
+    <span class="kw">if</span>(disc &gt; <span class="nm">0</span>){
+        r1=(-b+<span class="fn">sqrt</span>(disc))/(<span class="nm">2</span>*a);
+        r2=(-b-<span class="fn">sqrt</span>(disc))/(<span class="nm">2</span>*a);
+        <span class="fn">printf</span>(<span class="st">"Roots: %.2f and %.2f"</span>,r1,r2);
+    } <span class="kw">else if</span>(disc==<span class="nm">0</span>){
+        r1=-b/(<span class="nm">2</span>*a);
+        <span class="fn">printf</span>(<span class="st">"Equal roots: %.2f"</span>,r1);
+    } <span class="kw">else</span>
+        <span class="fn">printf</span>(<span class="st">"Imaginary roots"</span>);
+}</pre>
+        </div>
+        <div class="tricky">
+          <div class="tricky-head">⚡ Tricky Points</div>
+          <ul>
+            <li>Discriminant = b²-4ac: &gt;0 → 2 real roots, =0 → equal roots, &lt;0 → imaginary.</li>
+            <li>Need <span class="inline-code">#include &lt;math.h&gt;</span> for sqrt(). Compile with <span class="inline-code">-lm</span> flag on GCC.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggle(head) {
+  const card = head.parentElement;
+  card.classList.toggle('open');
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 2000);
+  });
+}
+
+/* Open first card on each page by default */
+document.querySelectorAll('.page').forEach(page => {
+  const first = page.querySelector('.qcard');
+  if(first) first.classList.add('open');
+});
+</script>
+
+</body>
+</html>
