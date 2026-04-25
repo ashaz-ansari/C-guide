@@ -93,7 +93,7 @@
   .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
   /* ── LAYOUT ── */
-  .page { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .page { display: none; padding: 1.25rem; max-width: 980px; margin: 0 auto; }
   .page.active { display: block; }
 
   /* ── SECTION HEADERS ── */
@@ -345,10 +345,121 @@
     margin: 0.75rem 0;
   }
 
-  @media (max-width: 600px) {
+
+  .app-shell {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 220px) minmax(0, 1fr) minmax(180px, 220px);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .content-column {
+    min-width: 0;
+  }
+
+  .ad-column {
+    position: sticky;
+    top: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ad-card {
+    background: linear-gradient(160deg, #151515 0%, #101010 100%);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 0.85rem;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .ad-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text3);
+  }
+
+  .ad-size {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .ad-copy {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  .inline-ad {
+    background: var(--surface);
+    border: 1px dashed var(--accent2);
+    border-radius: var(--radius-lg);
+    padding: 0.9rem 1rem;
+    margin: 0 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .inline-ad strong {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .inline-ad span {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  @media (max-width: 1100px) {
+    .main-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ad-column {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-bottom: 1rem;
+    }
+
+    .ad-column.right {
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 700px) {
     .diff-grid { grid-template-columns: 1fr; }
-    .page { padding: 1rem; }
+    .page { padding: 0.85rem; }
     pre { font-size: 11.5px; }
+    .topbar { padding: 0 0.75rem; }
+    .topbar-title { display: none; }
+    .app-shell { padding: 1rem 0.5rem 2rem; }
+    .ad-column {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .inline-ad {
+      padding: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
   }
 </style>
 </head>
@@ -365,6 +476,19 @@
   <button class="nav-btn" onclick="showPage('p7',this)">Structures</button>
   <button class="nav-btn" onclick="showPage('p8',this)">Programs</button>
 </div>
+
+<main class="app-shell">
+  <div class="main-grid">
+    <aside class="ad-column left" aria-label="Sponsored content left rail">
+      <div class="ad-card"><div class="ad-label">Sponsored</div><div class="ad-size">Desktop 160 × 600</div><div class="ad-copy">Sticky left rail ad slot for desktop readers.</div></div>
+      <div class="ad-card"><div class="ad-label">Sponsored</div><div class="ad-size">Mobile 320 × 100</div><div class="ad-copy">Automatically shifts below content on smaller screens.</div></div>
+    </aside>
+
+    <section class="content-column">
+      <div class="inline-ad" aria-label="Top in-content ad">
+        <strong>Ad placement zone</strong>
+        <span>Responsive in-article banner (728×90 desktop / 320×100 mobile)</span>
+      </div>
 
 <!-- ═══════════════════ PAGE 1: BASICS ═══════════════════ -->
 <div class="page active" id="p1">
@@ -2658,6 +2782,15 @@
 
 </div>
 
+    </section>
+
+    <aside class="ad-column right" aria-label="Sponsored content right rail">
+      <div class="ad-card"><div class="ad-label">Sponsored</div><div class="ad-size">Desktop 300 × 250</div><div class="ad-copy">Primary rectangle ad slot for monetization.</div></div>
+      <div class="ad-card"><div class="ad-label">Sponsored</div><div class="ad-size">Desktop 300 × 600</div><div class="ad-copy">Secondary sticky unit for long study sessions.</div></div>
+    </aside>
+  </div>
+</main>
+
 <script>
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2688,8 +2821,7 @@ document.querySelectorAll('.page').forEach(page => {
 });
 </script>
 <script src="https://pl29239228.profitablecpmratenetwork.com/14/47/35/144735e2dd494b8c61782eec4110f411.js"></script>
+<script src="https://pl29239225.profitablecpmratenetwork.com/98/8b/eb/988beb67458331da4a781a7ee7c69690.js"></script>
 
 </body>
-  <script src="https://pl29239225.profitablecpmratenetwork.com/98/8b/eb/988beb67458331da4a781a7ee7c69690.js"></script>
-
 </html>
